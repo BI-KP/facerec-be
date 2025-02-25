@@ -3,7 +3,7 @@ package kerjapraktik.facerecbe.resolver;
 import jakarta.servlet.http.HttpServletRequest;
 import kerjapraktik.facerecbe.entities.User;
 import kerjapraktik.facerecbe.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -16,8 +16,11 @@ import org.springframework.web.server.ResponseStatusException;
 @Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserArgumentResolver(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -25,7 +28,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest servletRequest = (HttpServletRequest) webRequest.getNativeRequest();
         String token = servletRequest.getHeader("X-API-TOKEN");
         if (token == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login required!");

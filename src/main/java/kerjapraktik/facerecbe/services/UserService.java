@@ -4,19 +4,21 @@ import kerjapraktik.facerecbe.dtos.MessageResponse;
 import kerjapraktik.facerecbe.dtos.RegisterRequest;
 import kerjapraktik.facerecbe.entities.User;
 import kerjapraktik.facerecbe.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    @Autowired
-    private ValidationService validationService;
+    private final ValidationService validationService;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private MessageResponse register(RegisterRequest request) {
+    public UserService(ValidationService validationService, UserRepository userRepository) {
+        this.validationService = validationService;
+        this.userRepository = userRepository;
+    }
+
+    public MessageResponse register(RegisterRequest request) {
         validationService.validate(request);
 
         User user = new User();
