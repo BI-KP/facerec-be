@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
 
 @Service
 public class JWTService {
@@ -16,9 +15,8 @@ public class JWTService {
     private final Dotenv env = Dotenv.load();
     private final String secretKey = env.get("SECRET_KEY");
 
-    public String generateToken(String username, Map<String, Object> claims) {
+    public String generateToken(String username) {
         return Jwts.builder()
-                .claims(claims)
                 .subject(username)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 10 hours

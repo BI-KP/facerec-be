@@ -10,4 +10,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findFirstByToken(String token);
 
+    Optional<User> findByUsername(String username);
+
 }

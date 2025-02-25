@@ -4,42 +4,34 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "CHAR(36)")
-    private String id;
+    private UUID id;
+
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "face_id")
-    private String faceId;
+    @Column(name = "face_id", nullable = true, columnDefinition = "CHAR(36)", unique = true)
+    private UUID faceId;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
+    @Column(nullable = true)
+    private String token;
 
-    @Override
-    public String getPassword() {
-        return "";
-    }
+    @Column(name = "token_expired_at", nullable = true)
+    private Long tokenExpiredAt;
 
-    @Override
-    public String getUsername() {
-        return "";
-    }
 }
