@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -16,7 +18,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(columnDefinition = "CHAR(36)")
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(columnDefinition = "CHAR(36)", updatable = false, nullable = false)
     private UUID id;
 
     @Column(nullable = false, unique = true)
@@ -25,13 +28,14 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "face_id", nullable = true, columnDefinition = "CHAR(36)", unique = true)
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(name = "face_id", columnDefinition = "CHAR(36)", unique = true)
     private UUID faceId;
 
-    @Column(nullable = true)
+    @Column
     private String token;
 
-    @Column(name = "token_expired_at", nullable = true)
+    @Column(name = "token_expired_at")
     private Long tokenExpiredAt;
 
 }

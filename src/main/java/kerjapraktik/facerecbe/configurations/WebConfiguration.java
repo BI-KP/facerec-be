@@ -1,4 +1,4 @@
-package kerjapraktik.facerecbe;
+package kerjapraktik.facerecbe.configurations;
 
 import kerjapraktik.facerecbe.resolver.UserArgumentResolver;
 import org.jetbrains.annotations.NotNull;
