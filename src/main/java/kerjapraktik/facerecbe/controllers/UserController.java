@@ -5,8 +5,9 @@ import kerjapraktik.facerecbe.dtos.RegisterRequest;
 import kerjapraktik.facerecbe.services.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class UserController {
@@ -19,10 +20,18 @@ public class UserController {
 
     @PostMapping(
             path = "/api/users/register",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public MessageResponse register(@RequestBody RegisterRequest request) {
+    public MessageResponse register(
+            @RequestPart("name") String name,
+            @RequestPart("username") String username,
+            @RequestPart("file") MultipartFile file
+    ) {
+        RegisterRequest request = new RegisterRequest();
+        request.setUsername(username);
+        request.setName(name);
+        request.setFile(file);
         return userService.register(request);
     }
 
