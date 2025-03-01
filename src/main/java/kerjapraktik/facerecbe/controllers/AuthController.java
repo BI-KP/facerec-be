@@ -7,8 +7,9 @@ import kerjapraktik.facerecbe.entities.User;
 import kerjapraktik.facerecbe.services.AuthService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class AuthController {
@@ -21,10 +22,12 @@ public class AuthController {
 
     @PostMapping(
             path = "/api/auth/login",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public LoginResponse loginResponse(@RequestBody LoginRequest request) {
+    public LoginResponse loginResponse(@RequestPart("file") MultipartFile file) {
+        LoginRequest request = new LoginRequest();
+        request.setFile(file);
         return authService.login(request);
     }
 

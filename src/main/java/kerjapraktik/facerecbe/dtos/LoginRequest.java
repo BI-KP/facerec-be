@@ -1,11 +1,11 @@
 package kerjapraktik.facerecbe.dtos;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LoginRequest {
 
-    @NotBlank
-    @Size(max = 255)
-    private String username;
+    @NotNull(message = "File must not be empty!")
+    private MultipartFile file;
 
 }
