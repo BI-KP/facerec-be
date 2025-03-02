@@ -1,0 +1,179 @@
+openapi: 3.1.0
+info:
+  title: Face Recognition API
+  description: "API for login, logout and register integrated with face recognition system"
+  version: 1.0.0
+servers:
+- url: localhost:8080/
+paths:
+  /api/auth/login:
+    post:
+      summary: POST api/auth/login
+      operationId: loginResponse
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Login Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  username:
+                    type: string
+                  name:
+                    type: string
+                  token:
+                    type: string
+        "400":
+          description: Validation Error or Spoof detected or Fail to read file
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Face Unknown
+          content:
+            text/plain:
+              schema:
+                type: string
+        "405":
+          description: Content-Type is not supported
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+  /api/auth/logout:
+    post:
+      summary: POST api/auth/logout
+      operationId: logout
+      parameters:
+      - name: X-Auth-Token
+        in: header
+        description: Authentication token
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "401":
+          description: Expired token or no token
+          content:
+            text/plain:
+              schema:
+                type: string
+  /api/users/register:
+    post:
+      summary: POST api/users/register
+      operationId: register
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - name
+              - username
+              - file
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: Validation Error or Username already exists!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    LoginResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        token:
+          type: string
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        path:
+          type: string
