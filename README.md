@@ -39,3 +39,5 @@ This is a Spring Boot project built with Maven for the authentication of Face Re
     ```bash
     mvn spring-boot:run
     ```
+## OpenAPI
+https://app.swaggerhub.com/apis/kpbi/face-recognition_api/1.0.0
